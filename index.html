@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Assistive Tech Match Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+    .column {
+      width: 45%;
+      min-width: 300px;
+    }
+    .draggable {
+      background-color: #d6eaf8;
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid #2980b9;
+      border-radius: 5px;
+      cursor: grab;
+    }
+    .droppable {
+      background-color: #f2f3f4;
+      margin: 10px;
+      padding: 20px;
+      border: 2px dashed #bbb;
+      border-radius: 5px;
+      min-height: 50px;
+    }
+    .matched {
+      background-color: #abebc6;
+      border-color: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <h2>Match the Student to Their Assistive Technology</h2>
+  <div class="container">
+    <div class="column" id="students">
+      <div class="droppable" data-match="Text-to-Speech Software">Jaylen</div>
+      <div class="droppable" data-match="Adaptive Keyboard">Mia</div>
+      <div class="droppable" data-match="Visual Timer">Trevor</div>
+      <div class="droppable" data-match="Screen Magnification Software">Aria</div>
+      <div class="droppable" data-match="Speech-Generating Device">Mateo</div>
+      <div class="droppable" data-match="Closed Captioning & Visual Supports">Sophia</div>
+      <div class="droppable" data-match="Visual Schedules">Elijah</div>
+      <div class="droppable" data-match="Noise-Canceling Headphones">Layla</div>
+      <div class="droppable" data-match="Pencil Grips and Writing Aids">Dominic</div>
+      <div class="droppable" data-match="Mindfulness & Regulation Apps">Zoe</div>
+      <div class="droppable" data-match="Screen Magnification Software">Carlos</div>
+      <div class="droppable" data-match="Speech-Generating Device">Riley</div>
+    </div>
+    <div class="column" id="tech">
+      <div class="draggable" draggable="true" data-tech="Text-to-Speech Software">Text-to-Speech Software</div>
+      <div class="draggable" draggable="true" data-tech="Adaptive Keyboard">Adaptive Keyboard</div>
+      <div class="draggable" draggable="true" data-tech="Visual Timer">Visual Timer</div>
+      <div class="draggable" draggable="true" data-tech="Screen Magnification Software">Screen Magnification Software</div>
+      <div class="draggable" draggable="true" data-tech="Speech-Generating Device">Speech-Generating Device</div>
+      <div class="draggable" draggable="true" data-tech="Closed Captioning & Visual Supports">Closed Captioning & Visual Supports</div>
+      <div class="draggable" draggable="true" data-tech="Visual Schedules">Visual Schedules</div>
+      <div class="draggable" draggable="true" data-tech="Noise-Canceling Headphones">Noise-Canceling Headphones</div>
+      <div class="draggable" draggable="true" data-tech="Pencil Grips and Writing Aids">Pencil Grips and Writing Aids</div>
+      <div class="draggable" draggable="true" data-tech="Mindfulness & Regulation Apps">Mindfulness & Regulation Apps</div>
+    </div>
+  </div>
+
+  <script>
+    const draggables = document.querySelectorAll(".draggable");
+    const droppables = document.querySelectorAll(".droppable");
+
+    draggables.forEach(drag => {
+      drag.addEventListener("dragstart", e => {
+        e.dataTransfer.setData("text", drag.dataset.tech);
+      });
+    });
+
+    droppables.forEach(drop => {
+      drop.addEventListener("dragover", e => e.preventDefault());
+
+      drop.addEventListener("drop", e => {
+        e.preventDefault();
+        const tech = e.dataTransfer.getData("text");
+
+        if (drop.dataset.match === tech) {
+          drop.textContent += ` ➜ ${tech}`;
+          drop.classList.add("matched");
+
+          const draggedEl = document.querySelector(`[data-tech='${tech}']`);
+          if (draggedEl) draggedEl.remove();
+        } else {
+          alert("Oops! Try again.");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
